@@ -150,4 +150,24 @@ describe User do
 
   end
 
+  it "should follow and unfollow a user" do
+    michael = User.new(name: "Michael", email: "michael@example.com", password: "foobar", password_confirmation: "foobar")
+    archer = User.new(name: "Archer", email: "archer@something.com", password: "foobar", password_confirmation: "foobar")
+
+    michael.save
+    archer.save
+
+    michael.following?(archer).should == false
+
+    michael.follow(archer)
+    michael.following?(archer).should == true
+    archer.followers.include?(michael).should == true
+
+    michael.unfollow(archer)
+    michael.following?(archer).should == false
+
+    michael.destroy
+    archer.destroy
+  end
+
 end
